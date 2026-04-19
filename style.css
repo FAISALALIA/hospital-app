@@ -1,0 +1,171 @@
+/* ===== Hospital Green Theme ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: #f0f9f1;
+  color: #0d4d2b;
+  line-height: 1.6;
+}
+
+/* Hospital Header with Logo */
+.hospital-header {
+  background: linear-gradient(135deg, #2e7d32, #4caf50);
+  padding: 20px 15px;
+  color: white;
+  box-shadow: 0 3px 10px rgba(46,125,50,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+}
+
+.hospital-header img {
+  width: 55px;
+  height: 55px;
+  border-radius: 10px;
+  background: white;
+  padding: 5px;
+  object-fit: contain;
+}
+
+.hospital-header .header-text h1 {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.hospital-header .header-text p {
+  font-size: 12px;
+  opacity: 0.9;
+  margin-top: 3px;
+}
+
+/* Container Card */
+.container {
+  max-width: 420px;
+  margin: 25px auto;
+  padding: 25px;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 15px rgba(46,125,50,0.12);
+  border-top: 4px solid #2e7d32;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #1b5e20;
+  font-size: 24px;
+}
+
+/* Input Fields */
+input, select, textarea {
+  width: 100%;
+  padding: 13px;
+  margin: 8px 0;
+  border: 2px solid #c8e6c9;
+  border-radius: 8px;
+  font-size: 15px;
+  background: #fbfffb;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: #2e7d32;
+  box-shadow: 0 0 0 3px rgba(46,125,50,0.1);
+}
+
+/* Buttons */
+button, .btn {
+  width: 100%;
+  padding: 14px;
+  background: #2e7d32;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: 0.2s;
+}
+
+button:hover, .btn:hover {
+  background: #1b5e20;
+  box-shadow: 0 4px 12px rgba(46,125,50,0.4);
+}
+
+.btn-secondary {
+  background: #66bb6a;
+}
+
+.btn-secondary:hover {
+  background: #4caf50;
+}
+
+/* Links & Text */
+a {
+  color: #1b5e20;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.link-text {
+  text-align: center;
+  margin-top: 15px;
+  font-size: 14px;
+}
+
+.error {
+  color: #c62828;
+  font-size: 13px;
+  margin: -5px 0 8px 0;
+}
+
+/* Table */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+th, td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #c8e6c9;
+}
+
+th {
+  background: #e8f5e9;
+  color: #0d4d2b;
+}
+
+/* Mobile Responsive */
+@media (max-width: 480px) {
+ .container {
+    margin: 15px 12px;
+    padding: 20px;
+  }
+  
+  .hospital-header .header-text h1 {
+    font-size: 16px;
+  }
+  
+  .hospital-header img {
+    width: 45px;
+    height: 45px;
+  }
+}
+
+.hidden {
+  display: none;
+}

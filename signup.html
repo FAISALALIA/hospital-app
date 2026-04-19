@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Sign Up - SHRI RAM SANEHI MEMORIAL HOSPITAL</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Green Hospital Header -->
+  <div class="hospital-header">
+    <img src="https://cdn-icons-png.flaticon.com/512/4006/4006511.png" alt="Hospital Logo">
+    <div class="header-text">
+      <h1>SHRI RAM SANEHI MEMORIAL HOSPITAL</h1>
+      <p>Care With Compassion</p>
+    </div>
+  </div>
+
+  <div class="container">
+    <h2>Create Account</h2>
+
+    <div>
+      <input type="text" id="signupName" placeholder="Full Name" required>
+      
+      <input type="email" id="signupEmail" placeholder="Email" required>
+      <div class="error" id="emailError"></div>
+      
+      <input type="tel" id="signupPhone" placeholder="Phone Number" maxlength="10" required>
+      <div class="error" id="phoneError"></div>
+      
+      <input type="password" id="signupPassword" placeholder="Password" required>
+      <input type="password" id="signupConfirmPassword" placeholder="Confirm Password" required>
+      <div class="error" id="passwordError"></div>
+      
+      <div class="error" id="signupError"></div>
+
+      <button type="button" onclick="signupUser()">Sign Up</button>
+      
+      <div class="link-text">
+        Already have an account? <a href="login.html">Login</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Phone me sirf number
+    document.getElementById('signupPhone').addEventListener('input', function(e) {
+      this.value = this.value.replace(/[^0-9]/g, '');
+    });
+
+    function signupUser() {
+      const name = document.getElementById('signupName').value.trim();
+      const email = document.getElementById('signupEmail').value.trim();
+      const phone = document.getElementById('signupPhone').value;
+      const password = document.getElementById('signupPassword').value;
+      const confirmPassword = document.getElementById('signupConfirmPassword').value;
+      
+      const emailError = document.getElementById('emailError');
+      const phoneError = document.getElementById('phoneError');
+      const passwordError = document.getElementById('passwordError');
+      const signupError = document.getElementById('signupError');
+      
+      emailError.innerText = '';
+      phoneError.innerText = '';
+      passwordError.innerText = '';
+      signupError.innerText = '';
+
+      // Validation
+      if(!name ||!email ||!phone ||!password ||!confirmPassword) {
+        signupError.innerText = 'Please fill all fields';
+        return;
+      }
+
+      if(phone.length !== 10) {
+        phoneError.innerText = 'Phone number must be exactly 10 digits';
+        return;
+      }
+
+      if(password !== confirmPassword) {
+        passwordError.innerText = 'Passwords do not match';
+        return;
+      }
+
+      if(password.length < 6) {
+        passwordError.innerText = 'Password must be at least 6 characters';
+        return;
+      }
+
+      let users = JSON.parse(localStorage.getItem('users')) || [];
+      
+      // Check if email/phone already exists
+      if(users.find(u => u.email === email)) {
+        emailError.innerText = 'Email already registered';
+        return;
+      }
+
+      if(users.find(u => u.phone === phone)) {
+        phoneError.innerText = 'Phone number already registered';
+        return;
+      }
+
+      const newUser = {
+        id: Date.now(),
+        name: name,
+        email: email,
+        phone: phone,
+        password: password
+      };
+
+      users.push(newUser);
+      localStorage.setItem('users', JSON.stringify(users));
+      
+      alert('Account created successfully! Please login.');
+      window.location.href = 'login.html';
+    }
+  </script>
+</body>
+</html>
