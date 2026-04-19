@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Login - SHRI RAM SANEHI MEMORIAL HOSPITAL</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Hospital Header -->
+  <div class="hospital-header">
+    <img src="https://cdn-icons-png.flaticon.com/512/4006/4006511.png" alt="Hospital Logo">
+    <div class="header-text">
+      <h1>SHRI RAM SANEHI MEMORIAL HOSPITAL</h1>
+      <p>Care With Compassion</p>
+    </div>
+  </div>
+
+  <div class="container">
+    <h2>Login</h2>
+    
+    <!-- Form tag hata diya - yahi refresh karta hai -->
+    <div>
+      <input type="text" id="loginEmail" placeholder="Email or Phone" required>
+      <input type="password" id="loginPassword" placeholder="Password" required>
+      <div class="error" id="loginError"></div>
+      
+      <div class="forgot-link">
+        <a href="forgot-password.html">Forgot Password?</a>
+      </div>
+      
+      <!-- type="button" important hai -->
+      <button type="button" onclick="loginUser()">Login</button>
+      
+      <div class="link-text">
+        Don't have an account? <a href="signup.html">Sign Up</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function loginUser() {
+      const emailOrPhone = document.getElementById('loginEmail').value.trim();
+      const password = document.getElementById('loginPassword').value;
+      const errorDiv = document.getElementById('loginError');
+      errorDiv.innerText = '';
+
+      if (!emailOrPhone || !password) {
+        errorDiv.innerText = 'Please fill all fields';
+        return;
+      }
+
+      const users = JSON.parse(localStorage.getItem('users')) || [];
+      const user = users.find(u => 
+        (u.email === emailOrPhone || u.phone === emailOrPhone) && u.password === password
+      );
+
+      if (user) {
+        localStorage.setItem('currentUser', JSON.stringify(user));
+        window.location.href = 'home.html'; // Direct redirect, no refresh
+      } else {
+        errorDiv.innerText = 'Invalid credentials';
+      }
+    }
+
+    // Enter key pe bhi login ho jaye
+    document.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        loginUser();
+      }
+    });
+  </script>
+</body>
+</html>

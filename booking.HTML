@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Book Appointment - SHRI RAM SANEHI MEMORIAL HOSPITAL</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Green Hospital Header -->
+  <div class="hospital-header">
+    <img src="https://cdn-icons-png.flaticon.com/512/4006/4006511.png" alt="Hospital Logo">
+    <div class="header-text">
+      <h1>SHRI RAM SANEHI MEMORIAL HOSPITAL</h1>
+      <p>Care With Compassion</p>
+    </div>
+  </div>
+
+  <div class="container">
+    <h2>Book Appointment</h2>
+
+    <div>
+      <input type="text" id="patientName" placeholder="Patient Name" required>
+      
+      <input type="number" id="patientAge" placeholder="Age" min="1" max="100" required>
+      <div class="error" id="ageError"></div>
+      
+      <input type="text" id="patientAddress" placeholder="Address" required>
+      
+      <input type="tel" id="patientPhone" placeholder="Phone Number" maxlength="10" pattern="[0-9]{10}" required>
+      <div class="error" id="phoneError"></div>
+
+      <!-- Naya Doctor Select -->
+      <select id="doctor" required>
+        <option value="">Select Doctor</option>
+        <option value="Dr Gopal Shukla">Dr Gopal Shukla</option>
+        <option value="Dr Tahir Husain">Dr Tahir Husain</option>
+      </select>
+      
+      <div class="error" id="bookingError"></div>
+
+      <button type="button" onclick="bookAppointment()">Confirm Booking</button>
+      <button type="button" class="btn-secondary" onclick="window.location.href='home.html'">Back to Home</button>
+    </div>
+  </div>
+
+  <script>
+    // Check login
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    if(!currentUser) {
+      window.location.href = 'login.html';
+    }
+
+    // Phone me sirf number type ho
+    document.getElementById('patientPhone').addEventListener('input', function(e) {
+      this.value = this.value.replace(/[^0-9]/g, '');
+    });
+
+    function bookAppointment() {
+      const name = document.getElementById('patientName').value.trim();
+      const age = document.getElementById('patientAge').value;
+      const address = document.getElementById('patientAddress').value.trim();
+      const phone = document.getElementById('patientPhone').value;
+      const doctor = document.getElementById('doctor').value;
+      
+      const ageError = document.getElementById('ageError');
+      const phoneError = document.getElementById('phoneError');
+      const bookingError = document.getElementById('bookingError');
+      
+      ageError.innerText = '';
+      phoneError.innerText = '';
+      bookingError.innerText = '';
+
+      // Validation
+      if(!name ||!age ||!address ||!phone ||!doctor) {
+        bookingError.innerText = 'Please fill all fields';
+        return;
+      }
+
+      if(age < 1 || age > 100) {
+        ageError.innerText = 'Age must be between 1 to 100';
+        return;
+      }
+
+      if(phone.length !== 10) {
+        phoneError.innerText = 'Phone number must be exactly 10 digits';
+        return;
+      }
+
+      const booking = {
+        id: Date.now(),
+        patientName: name,
+        patientAge: age,
+        patientAddress: address,
+        patientPhone: phone,
+        doctor: doctor,
+        bookedBy: currentUser.email,
+        status: 'Pending',
+        bookingDate: new Date().toLocaleDateString()
+      };
+
+      let bookings = JSON.parse(localStorage.getItem('bookings')) || [];
+      bookings.push(booking);
+      localStorage.setItem('bookings', JSON.stringify(bookings));
+
+      localStorage.setItem('lastBookingId', booking.id);
+      window.location.href = 'submitted.html';
+    }
+  </script>
+</body>
+</html>
