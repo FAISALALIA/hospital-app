@@ -37,7 +37,7 @@
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
     
     if(!currentUser) {
-      window.location.href = 'login.html';
+      window.location.href = 'index.html';
     } else {
       // Sirf safe details show karo - PASSWORD KABHI NAHI
       document.getElementById('userName').innerText = currentUser.name;
