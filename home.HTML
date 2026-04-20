@@ -30,6 +30,13 @@
     <button onclick="window.location.href='booking.HTML'">Book Appointment</button>
     <button class="btn-secondary" onclick="window.location.href='response.HTML'">View All Bookings</button>
     <button class="btn-red" onclick="logout()">Logout</button>
+    <script>
+function logout(){
+  localStorage.removeItem('currentUser'); // login data delete
+  alert('Logged out successfully');
+  window.location.href = 'index.html'; // seedha login page pe
+}
+</script>
   </div>
 
   <script>
