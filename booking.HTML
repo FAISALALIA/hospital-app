@@ -45,67 +45,64 @@
   </div>
 
   <script>
-    // Check login
-    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    if(!currentUser) {
-      window.location.href = 'index.html';
-    }
+// Check kar ki user login hai ya nahi
+var mobile = localStorage.getItem('currentUser');
+if(!mobile){
+  alert("Pehle login karo");
+  window.location.href = 'index.html';
+}
 
-    // Phone me sirf number type ho
-    document.getElementById('patientPhone').addEventListener('input', function(e) {
-      this.value = this.value.replace(/[^0-9]/g, '');
-    });
+https://script.google.com/macros/s/AKfycbxbY1nlrtREfjRYCUdjWFEV0wTP4nQa15NPBamXAmxOoafZwtub5flmtBlOWwjj_qb9/exec
 
-    function bookAppointment() {
-      const name = document.getElementById('patientName').value.trim();
-      const age = document.getElementById('patientAge').value;
-      const address = document.getElementById('patientAddress').value.trim();
-      const phone = document.getElementById('patientPhone').value;
-      const doctor = document.getElementById('doctor').value;
-      
-      const ageError = document.getElementById('ageError');
-      const phoneError = document.getElementById('phoneError');
-      const bookingError = document.getElementById('bookingError');
-      
-      ageError.innerText = '';
-      phoneError.innerText = '';
-      bookingError.innerText = '';
+const SHEET_URL = 'YAHAN_WO_URL_PASTE_KARNA';
 
-      // Validation
-      if(!name ||!age ||!address ||!phone ||!doctor) {
-        bookingError.innerText = 'Please fill all fields';
-        return;
-      }
+function submitBooking(){
+  // Form ki values utha le
+  var name = document.getElementById('name').value;
+  var age = document.getElementById('age').value;
+  var problem = document.getElementById('problem').value;
+  var date = document.getElementById('date').value;
+  var time = document.getElementById('time').value;
 
-      if(age < 1 || age > 100) {
-        ageError.innerText = 'Age must be between 1 to 100';
-        return;
-      }
+  // Khali to nahi hai check kar
+  if(name == "" || age == "" || problem == "" || date == "" || time == ""){
+    alert("Sabhi details bharo bhai");
+    return;
+  }
 
-      if(phone.length !== 10) {
-        phoneError.innerText = 'Phone number must be exactly 10 digits';
-        return;
-      }
+  // Button disable kar de taaki 2 baar click na ho
+  document.getElementById('bookBtn').disabled = true;
+  document.getElementById('bookBtn').innerText = 'Booking...';
 
-      const booking = {
-        id: Date.now(),
-        patientName: name,
-        patientAge: age,
-        patientAddress: address,
-        patientPhone: phone,
-        doctor: doctor,
-        bookedBy: currentUser.email,
-        status: 'Pending',
-        bookingDate: new Date().toLocaleDateString()
-      };
+  // Google Sheet me bhej de
+  fetch(SHEET_URL, {
+    method: 'POST',
+    mode: 'no-cors', // Ye zaroori hai CORS error se bachne ke liye
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      name: name,
+      mobile: mobile,
+      age: age,
+      problem: problem,
+      date: date,
+      time: time
+    })
+  })
+  .then(response => {
+    alert("Booking Successful! Doctor ka reply response page pe check karte raho");
+    window.location.href = 'response.html';
+  })
+  .catch(error => {
+    alert("Kuch error aa gaya. Net check karo");
+    document.getElementById('bookBtn').disabled = false;
+    document.getElementById('bookBtn').innerText = 'Book Appointment';
+  });
+}
 
-      let bookings = JSON.parse(localStorage.getItem('bookings')) || [];
-      bookings.push(booking);
-      localStorage.setItem('bookings', JSON.stringify(bookings));
-
-      localStorage.setItem('lastBookingId', booking.id);
-      window.location.href = 'submitted.HTML';
-    }
+// Button pe click event laga de
+document.getElementById('bookBtn').onclick = submitBooking;
   </script>
 </body>
 </html>
