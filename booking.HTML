@@ -1,86 +1,56 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Book Appointment - SHRI RAM SANEHI MEMORIAL HOSPITAL</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book Appointment - SRS Hospital</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- Green Hospital Header -->
-  <div class="hospital-header">
-    <img src="https://cdn-icons-png.flaticon.com/512/4006/4006511.png" alt="Hospital Logo">
-    <div class="header-text">
-      <h1>SHRI RAM SANEHI MEMORIAL HOSPITAL</h1>
-      <p>Care With Compassion</p>
-    </div>
-  </div>
-
   <div class="container">
-    <h2>Book Appointment</h2>
-
-    <div>
-      <input type="text" id="patientName" placeholder="Patient Name" required>
+    <div class="box">
+      <h2>SRS Hospital</h2>
+      <h3>Book Your Appointment</h3>
       
-      <input type="number" id="patientAge" placeholder="Age" min="1" max="100" required>
-      <div class="error" id="ageError"></div>
+      <input type="text" id="name" placeholder="Patient ka Naam" required>
+      <input type="number" id="age" placeholder="Age" required>
+      <input type="text" id="problem" placeholder="Problem / Bimari" required>
+      <input type="date" id="date" required>
+      <input type="time" id="time" required>
       
-      <input type="text" id="patientAddress" placeholder="Address" required>
-      
-      <input type="tel" id="patientPhone" placeholder="Phone Number" maxlength="10" pattern="[0-9]{10}" required>
-      <div class="error" id="phoneError"></div>
-
-      <!-- Naya Doctor Select -->
-      <select id="doctor" required>
-        <option value="">Select Doctor</option>
-        <option value="Dr Gopal Shukla">Dr Gopal Shukla</option>
-        <option value="Dr Tahir Husain">Dr Tahir Husain</option>
-      </select>
-      
-      <div class="error" id="bookingError"></div>
-
-      <button type="button" onclick="bookAppointment()">Confirm Booking</button>
-      <button type="button" class="btn-secondary" onclick="window.location.href='home.HTML'">Back to Home</button>
+      <button id="bookBtn">Book Appointment</button>
+      <p><a href="response.html">Check Booking Status</a></p>
     </div>
   </div>
 
-  <script>
-// Check kar ki user login hai ya nahi
+<script>
+// Check karo user login hai ya nahi
 var mobile = localStorage.getItem('currentUser');
 if(!mobile){
   alert("Pehle login karo");
   window.location.href = 'index.html';
 }
 
-
-const SHEET_URL = 'https://script.google.com/macros/s/AKfycbxbY1nlrtREfjRYCUdjWFEV0wTP4nQa15NPBamXAmxOoafZwtub5flmtBlOWwjj_qb9/exec
-;
+// YAHAN APNA GOOGLE APPS SCRIPT KA URL DAALNA
+const SHEET_URL = https://script.google.com/macros/s/AKfycbxbY1nlrtREfjRYCUdjWFEV0wTP4nQa15NPBamXAmxOoafZwtub5flmtBlOWwjj_qb9/exec'';
 
 function submitBooking(){
-  // Form ki values utha le
   var name = document.getElementById('name').value;
   var age = document.getElementById('age').value;
   var problem = document.getElementById('problem').value;
   var date = document.getElementById('date').value;
   var time = document.getElementById('time').value;
 
-  // Khali to nahi hai check kar
   if(name == "" || age == "" || problem == "" || date == "" || time == ""){
     alert("Sabhi details bharo bhai");
     return;
   }
 
-  // Button disable kar de taaki 2 baar click na ho
   document.getElementById('bookBtn').disabled = true;
   document.getElementById('bookBtn').innerText = 'Booking...';
 
-  // Google Sheet me bhej de
   fetch(SHEET_URL, {
     method: 'POST',
-    mode: 'no-cors', // Ye zaroori hai CORS error se bachne ke liye
-    headers: {
-      'Content-Type': 'application/json',
-    },
     body: JSON.stringify({
       name: name,
       mobile: mobile,
@@ -95,14 +65,14 @@ function submitBooking(){
     window.location.href = 'response.html';
   })
   .catch(error => {
-    alert("Kuch error aa gaya. Net check karo");
+    alert("Kuch error aa gaya. Net check karo ya URL sahi daala hai check karo");
     document.getElementById('bookBtn').disabled = false;
     document.getElementById('bookBtn').innerText = 'Book Appointment';
   });
 }
 
-// Button pe click event laga de
 document.getElementById('bookBtn').onclick = submitBooking;
-  </script>
+</script>
+
 </body>
 </html>
