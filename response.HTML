@@ -1,43 +1,60 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Status - Booking App</title>
-  <style>
-    body { font-family: Arial; background: #f0f2f5; }
-    .container { max-width: 500px; margin: 40px auto; padding: 30px; background: white; border-radius: 10px; text-align: center; }
-    .status { padding: 15px; background: #e7f3ff; border-left: 4px solid #1877f2; margin: 20px 0; }
-    .btn { padding: 12px 24px; background: #42b72a; color: white; border: none; border-radius: 6px; cursor: pointer; }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Booking Status - SRS Hospital</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-     <!-- Hospital Header -->
-  <div class="hospital-header">
-    <img src="hospital-logo.png" alt="Hospital Logo">
-    <div class="header-text">
-      <h1>SHRI RAM SANEHI MEMORIAL HOSPITAL</h1>
-      <p>Care With Compassion</p>
-    </div>
-  </div>
   <div class="container">
-    <h2>Booking Status</h2>
-    <div class="status" id="statusBox">
-      <h3>Status: Confirmed ✅</h3>
-      <p id="bookDetails"></p>
+    <div class="box">
+      <h2>Your Booking Status</h2>
+      <p><b>Name:</b> <span id="name">Loading...</span></p>
+      <p><b>Status:</b> <span id="status">Loading...</span></p>
+      <p><b>Doctor Reply:</b> <span id="reply">Loading...</span></p>
+      <p><b>Appointment:</b> <span id="apptime">Loading...</span></p>
+      <br>
+      <button onclick="location.reload()">Refresh Status</button>
+      <p><a href="booking.html">Book New Appointment</a></p>
     </div>
-    <button class="btn" onclick="window.location.href='home.HTML'">Back to Home</button>
   </div>
 
-  <script>
-    const booking = JSON.parse(localStorage.getItem('booking'));
-    if(booking) {
-      document.getElementById('bookDetails').innerHTML = `
-        <b>Name:</b> ${booking.name}<br>
-        <b>Service:</b> ${booking.service}<br>
-        <b>Age:</b> ${booking.age}<br>
-        <b>Phone:</b> ${booking.phone}
-      `;
+<script>
+var mobile = localStorage.getItem('currentUser');
+if(!mobile){
+  alert("Pehle login karo");
+  window.location.href = 'index.html';
+}
+
+// YAHI WAHI URL JO BOOKING.HTML ME DAALA THA
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbxbY1nlrtREfjRYCUdjWFEV0wTP4nQa15NPBamXAmxOoafZwtub5flmtBlOWwjj_qb9/exec';
+
+function checkStatus(){
+  fetch(SHEET_URL + '?mobile=' + mobile)
+  .then(res => res.json())
+  .then(data => {
+    if(data.status == "Not Found"){
+      document.getElementById('status').innerText = "Koi booking nahi mili";
+      document.getElementById('reply').innerText = "Pehle booking karo";
+    } else {
+      document.getElementById('name').innerText = data.name || 'Patient';
+      document.getElementById('status').innerText = data.status;
+      document.getElementById('reply').innerText = data.reply || 'Doctor will reply soon';
+      document.getElementById('apptime').innerText = data.date + ' ko ' + data.time;
     }
-  </script>
+  })
+  .catch(err => {
+    document.getElementById('status').innerText = "Error: Net check karo";
+  });
+}
+
+// Page load hote hi check kar
+checkStatus();
+
+// Har 10 sec me auto refresh
+setInterval(checkStatus, 10000);
+</script>
+
 </body>
 </html>
