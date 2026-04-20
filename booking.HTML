@@ -1,78 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Book Appointment - SRS Hospital</title>
-  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body { margin:0; font-family:Arial; }
+    h2 { text-align:center; padding:15px; background:#1976d2; color:white; margin:0; }
+    iframe { border:none; }
+    .back { text-align:center; padding:15px; }
+  </style>
 </head>
 <body>
-  <div class="container">
-    <div class="box">
-      <h2>SRS Hospital</h2>
-      <h3>Book Your Appointment</h3>
-      
-      <input type="text" id="name" placeholder="Patient ka Naam" required>
-      <input type="number" id="age" placeholder="Age" required>
-      <input type="text" id="problem" placeholder="Problem / Bimari" required>
-      <input type="date" id="date" required>
-      <input type="time" id="time" required>
-      
-      <button id="bookBtn">Book Appointment</button>
-      <p><a href="response.html">Check Booking Status</a></p>
-    </div>
+  <h2>Book Your Appointment</h2>
+  
+  
+  <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSc3HuXgjOsDIhf3kNiqjuyQMqGkvIQuJZefN7lcBg8Woy6gpw/viewform?usp=publish-editor" 
+          width="100%" 
+          height="800" 
+          frameborder="0" 
+          marginheight="0" 
+          marginwidth="0">
+    Loading…
+  </iframe>
+
+  <div class="back">
+    <a href="index.html">← Back to Home</a>
   </div>
-
-<script>
-// Check karo user login hai ya nahi
-var mobile = localStorage.getItem('currentUser');
-if(!mobile){
-  alert("Pehle login karo");
-  window.location.href = 'index.html';
-}
-
-// YAHAN APNA GOOGLE APPS SCRIPT KA URL DAALNA
-const SHEET_URL = 'https://script.google.com/macros/s/AKfycbxbY1nlrtREfjRYCUdjWFEV0wTP4nQa15NPBamXAmxOoafZwtub5flmtBlOWwjj_qb9/exec';
-
-function submitBooking(){
-  var name = document.getElementById('name').value;
-  var age = document.getElementById('age').value;
-  var problem = document.getElementById('problem').value;
-  var date = document.getElementById('date').value;
-  var time = document.getElementById('time').value;
-
-  if(name == "" || age == "" || problem == "" || date == "" || time == ""){
-    alert("Sabhi details bharo bhai");
-    return;
-  }
-
-  document.getElementById('bookBtn').disabled = true;
-  document.getElementById('bookBtn').innerText = 'Booking...';
-
-  fetch(SHEET_URL, {
-    method: 'POST',
-    body: JSON.stringify({
-      name: name,
-      mobile: mobile,
-      age: age,
-      problem: problem,
-      date: date,
-      time: time
-    })
-  })
-  .then(response => {
-    alert("Booking Successful! Doctor ka reply response page pe check karte raho");
-    window.location.href = 'response.html';
-  })
-  .catch(error => {
-    alert("Kuch error aa gaya. Net check karo ya URL sahi daala hai check karo");
-    document.getElementById('bookBtn').disabled = false;
-    document.getElementById('bookBtn').innerText = 'Book Appointment';
-  });
-}
-
-document.getElementById('bookBtn').onclick = submitBooking;
-</script>
-
 </body>
 </html>
