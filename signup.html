@@ -6,7 +6,8 @@
   <style>
     body { font-family:Arial; background:#00a651; padding:20px; margin:0; }
     .box { max-width:400px; margin:60px auto; background:white; padding:30px; border-radius:10px; box-shadow:0 4px 12px rgba(0,0,0,0.2); }
-    h2 { text-align:center; color:#00a651; margin-bottom:25px; }
+    h2 { text-align:center; color:#00a651; margin-bottom:5px; }
+    h3 { text-align:center; color:#333; margin-top:5px; margin-bottom:25px; }
     input { width:100%; padding:12px; margin:10px 0; border:2px solid #ddd; border-radius:6px; box-sizing:border-box; font-size:16px; }
     button { width:100%; padding:14px; background:#00a651; color:white; border:none; border-radius:6px; font-size:18px; font-weight:bold; cursor:pointer; margin-top:10px; }
     button:hover { background:#008543; }
@@ -18,14 +19,14 @@
 <body>
   <div class="box">
     <h2>SHRI RAM SANEHI HOSPITAL</h2>
-    <h3 style="text-align:center; color:#333;">Create Account</h3>
+    <h3>Create Account</h3>
     <input type="text" id="name" placeholder="Full Name">
     <input type="text" id="mobile" placeholder="Mobile Number" maxlength="10">
     <input type="password" id="pass" placeholder="Create Password">
     <button onclick="signup()">Sign Up</button>
     <div id="msg"></div>
     <div class="bottom-link">
-      Already have account? <a href="login.html">Login</a>
+      Already have account? <a href="index.html">Login</a>
     </div>
   </div>
 
@@ -60,7 +61,7 @@
       msg.innerText = 'Account ban gaya! Login page pe ja rahe...';
       
       setTimeout(() => {
-        window.location.href = 'login.html';
+        window.location.href = 'index.html';
       }, 1500);
     }
   </script>
