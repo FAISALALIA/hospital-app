@@ -6,24 +6,29 @@
   <style>
     body { margin:0; padding:0; background:#f0f0f0; font-family:Arial; }
     .topbar {
-      background:#00a651; padding:12px; text-align:center;
+      background:#00a651; padding:12px; text-align:center; color:white;
     }
     .topbar a {
-      color:white; margin:0 12px; text-decoration:none; font-weight:bold;
+      color:white; margin:0 12px; text-decoration:none; font-weight:bold; cursor:pointer;
     }
   </style>
 </head>
 <body>
-  <!-- Top Menu me Login/Signup ka link -->
+  <script>
+    // Agar login nahi hai to login.html pe bhej do
+    if(!localStorage.getItem('loggedInUser')) {
+      window.location.href = 'login.html';
+    }
+  </script>
+
+  <!-- Top Bar with Logout -->
   <div class="topbar">
-    <a href="index.html">Home</a>
+    <span id="welcome"></span>
     <a href="booking.html">Book Appointment</a>
-    <a href="signup.html">Sign Up</a>
-    <a href="foget-password.html">Login</a>
-    <a href="response.HTML">Admin</a>
+    <a onclick="logout()">Logout</a>
   </div>
 
-  <!-- 23 Tareekh wala Green Box -->
+  <!-- 23 Tareekh wala Green Check Status Box -->
   <iframe
     src="https://script.google.com/macros/s/AKfycbxfSWpZuYuGZzjvB_7278hJBW_-4SVxP7n9cJqC6DS2u9qM4amgvFNkPQcg5U8336fN/exec"
     width="100%"
@@ -32,5 +37,15 @@
     scrolling="no"
     style="display:block;">
   </iframe>
+
+  <script>
+    var user = localStorage.getItem('loggedInUser');
+    document.getElementById('welcome').innerText = 'Welcome: ' + user + ' | ';
+    
+    function logout() {
+      localStorage.removeItem('loggedInUser');
+      window.location.href = 'login.html';
+    }
+  </script>
 </body>
 </html>
