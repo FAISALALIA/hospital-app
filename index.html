@@ -32,7 +32,7 @@
   <script>
     // Agar pehle se login hai to sidha dashboard pe bhej do
     if(localStorage.getItem('loggedInUser')) {
-      window.location.href = 'dashboard.html';
+      window.location.href = 'home.HTML';
     }
 
     function login() {
@@ -51,7 +51,7 @@
       
       if(found) {
         localStorage.setItem('loggedInUser', mobile);
-        window.location.href = 'dashboard.html';
+        window.location.href = 'home.HTML';
       } else {
         msg.style.display = 'block';
         msg.innerText = 'Galat Mobile ya Password';
