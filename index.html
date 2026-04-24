@@ -30,6 +30,7 @@
   </div>
 
   <script>
+    // YAHAN TERA APPSCRIPT KA LINK HAI 👇
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxfSWpZuYuGZzjvB_7278hJBW_-4SVxP7n9cJqC6DS2u9qM4amgvFNkPQcg5U8336fN/exec";
     
     function checkStatus() {
@@ -49,7 +50,6 @@
       resultDiv.className = '';
       resultDiv.innerHTML = 'Checking...';
       
-      // JSONP call for github.io
       var script = document.createElement('script');
       script.src = SCRIPT_URL + "?action=check&mobile=" + mobile + "&callback=handleResponse";
       document.body.appendChild(script);
