@@ -1,117 +1,67 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title>Sign Up - SHRI RAM SANEHI MEMORIAL HOSPITAL</title>
+  <title>Patient Sign Up</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css">
+  <style>
+    body { font-family:Arial; background:#00a651; padding:20px; margin:0; }
+    .box { max-width:400px; margin:60px auto; background:white; padding:30px; border-radius:10px; box-shadow:0 4px 12px rgba(0,0,0,0.2); }
+    h2 { text-align:center; color:#00a651; margin-bottom:25px; }
+    input { width:100%; padding:12px; margin:10px 0; border:2px solid #ddd; border-radius:6px; box-sizing:border-box; font-size:16px; }
+    button { width:100%; padding:14px; background:#00a651; color:white; border:none; border-radius:6px; font-size:18px; font-weight:bold; cursor:pointer; margin-top:10px; }
+    button:hover { background:#008543; }
+    .bottom-link { text-align:center; margin-top:15px; font-size:14px; }
+    .bottom-link a { color:#0066cc; text-decoration:none; font-weight:bold; }
+    #msg { text-align:center; color:green; margin-top:10px; display:none; }
+  </style>
 </head>
 <body>
-  <!-- Green Hospital Header -->
-  <div class="hospital-header">
-    <img src="https://cdn-icons-png.flaticon.com/512/4006/4006511.png" alt="Hospital Logo">
-    <div class="header-text">
-      <h1>SHRI RAM SANEHI MEMORIAL HOSPITAL</h1>
-      <p>Care With Compassion</p>
-    </div>
-  </div>
-
-  <div class="container">
-    <h2>Create Account</h2>
-
-    <div>
-      <input type="text" id="signupName" placeholder="Full Name" required>
-      
-      <input type="email" id="signupEmail" placeholder="Email" required>
-      <div class="error" id="emailError"></div>
-      
-      <input type="tel" id="signupPhone" placeholder="Phone Number" maxlength="10" required>
-      <div class="error" id="phoneError"></div>
-      
-      <input type="password" id="signupPassword" placeholder="Password" required>
-      <input type="password" id="signupConfirmPassword" placeholder="Confirm Password" required>
-      <div class="error" id="passwordError"></div>
-      
-      <div class="error" id="signupError"></div>
-
-      <button type="button" onclick="signupUser()">Sign Up</button>
-      
-      <div class="link-text">
-        Already have an account? <a href="index.html">Login</a>
-      </div>
+  <div class="box">
+    <h2>SHRI RAM SANEHI HOSPITAL</h2>
+    <h3 style="text-align:center; color:#333;">Create Account</h3>
+    <input type="text" id="name" placeholder="Full Name">
+    <input type="text" id="mobile" placeholder="Mobile Number" maxlength="10">
+    <input type="password" id="pass" placeholder="Create Password">
+    <button onclick="signup()">Sign Up</button>
+    <div id="msg"></div>
+    <div class="bottom-link">
+      Already have account? <a href="login.html">Login</a>
     </div>
   </div>
 
   <script>
-    // Phone me sirf number
-    document.getElementById('signupPhone').addEventListener('input', function(e) {
-      this.value = this.value.replace(/[^0-9]/g, '');
-    });
-
-    function signupUser() {
-      const name = document.getElementById('signupName').value.trim();
-      const email = document.getElementById('signupEmail').value.trim();
-      const phone = document.getElementById('signupPhone').value;
-      const password = document.getElementById('signupPassword').value;
-      const confirmPassword = document.getElementById('signupConfirmPassword').value;
+    function signup() {
+      var name = document.getElementById('name').value;
+      var mobile = document.getElementById('mobile').value;
+      var pass = document.getElementById('pass').value;
+      var msg = document.getElementById('msg');
       
-      const emailError = document.getElementById('emailError');
-      const phoneError = document.getElementById('phoneError');
-      const passwordError = document.getElementById('passwordError');
-      const signupError = document.getElementById('signupError');
+      if(!name || mobile.length !== 10 || !pass) {
+        msg.style.color = 'red';
+        msg.style.display = 'block';
+        msg.innerText = 'Sab field bharo. Mobile 10 digit ka';
+        return;
+      }
       
-      emailError.innerText = '';
-      phoneError.innerText = '';
-      passwordError.innerText = '';
-      signupError.innerText = '';
-
-      // Validation
-      if(!name ||!email ||!phone ||!password ||!confirmPassword) {
-        signupError.innerText = 'Please fill all fields';
-        return;
-      }
-
-      if(phone.length !== 10) {
-        phoneError.innerText = 'Phone number must be exactly 10 digits';
-        return;
-      }
-
-      if(password !== confirmPassword) {
-        passwordError.innerText = 'Passwords do not match';
-        return;
-      }
-
-      if(password.length < 6) {
-        passwordError.innerText = 'Password must be at least 6 characters';
-        return;
-      }
-
-      let users = JSON.parse(localStorage.getItem('users')) || [];
+      var users = JSON.parse(localStorage.getItem('users') || '[]');
       
-      // Check if email/phone already exists
-      if(users.find(u => u.email === email)) {
-        emailError.innerText = 'Email already registered';
+      if(users.find(u => u.mobile === mobile)) {
+        msg.style.color = 'red';
+        msg.style.display = 'block';
+        msg.innerText = 'Ye mobile already registered hai';
         return;
       }
-
-      if(users.find(u => u.phone === phone)) {
-        phoneError.innerText = 'Phone number already registered';
-        return;
-      }
-
-      const newUser = {
-        id: Date.now(),
-        name: name,
-        email: email,
-        phone: phone,
-        password: password
-      };
-
-      users.push(newUser);
+      
+      users.push({name: name, mobile: mobile, pass: pass});
       localStorage.setItem('users', JSON.stringify(users));
       
-      alert('Account created successfully! Please login.');
-      window.location.href = 'index.html';
+      msg.style.color = 'green';
+      msg.style.display = 'block';
+      msg.innerText = 'Account ban gaya! Login page pe ja rahe...';
+      
+      setTimeout(() => {
+        window.location.href = 'login.html';
+      }, 1500);
     }
   </script>
 </body>
