@@ -1,72 +1,82 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <base target="_top">
+  <title>Hospital App - Check Status</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SHRI RAM SANEHI MEMORIAL HOSPITAL</title>
+  <link rel="stylesheet" href="style.css">
   <style>
-    body { font-family: Arial; padding: 20px; background: #f5f5f5; }
-  .container { max-width: 500px; margin: 0 auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-    h1 { color: #c41e3a; text-align: center; margin-bottom: 10px; font-size: 24px; }
-    h3 { text-align: center; color: #555; margin-bottom: 30px; }
-    input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; font-size: 16px; }
-    button { width: 100%; padding: 12px; background: #c41e3a; color: white; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; margin-top: 10px; }
-    button:hover { background: #a01830; }
-    button:disabled { background: #ccc; cursor: not-allowed; }
-    #result { margin-top: 20px; padding: 15px; border-radius: 5px; display: none; line-height: 1.6; }
-  .success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
-  .error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f5f5f5;
+    }
+    .navbar {
+      background: #c41e3a;
+      padding: 15px;
+      text-align: center;
+    }
+    .navbar a {
+      color: white;
+      margin: 0 15px;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 16px;
+    }
+    .navbar a:hover {
+      text-decoration: underline;
+    }
+    .logo {
+      text-align: center;
+      margin: 20px 0;
+    }
+    .logo img {
+      max-width: 180px;
+      height: auto;
+    }
+    .container {
+      width: 100%;
+      max-width: 600px;
+      margin: 20px auto;
+      padding: 0 15px;
+      box-sizing: border-box;
+    }
+    .iframe-box {
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      background: white;
+    }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>SHRI RAM SANEHI MEMORIAL HOSPITAL</h1>
-    <h3>Check Booking Status</h3>
-    
-    <input type="tel" id="mobile" placeholder="Enter 10 digit mobile number" maxlength="10">
-    <button onclick="checkStatus()" id="checkBtn">Check Status</button>
-    
-    <div id="result"></div>
+
+  <!-- Top Menu -->
+  <div class="navbar">
+    <a href="index.html">Home</a>
+    <a href="booking.html">New Booking</a>
+    <a href="response.HTML">Admin Panel</a>
+    <a href="signup.html">Sign Up</a>
   </div>
 
-  <script>
-    // YAHAN TERA APPSCRIPT KA LINK HAI 👇
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxfSWpZuYuGZzjvB_7278hJBW_-4SVxP7n9cJqC6DS2u9qM4amgvFNkPQcg5U8336fN/exec";
-    
-    function checkStatus() {
-      var mobile = document.getElementById('mobile').value;
-      var resultDiv = document.getElementById('result');
-      var btn = document.getElementById('checkBtn');
-      
-      if(mobile.length!== 10) {
-        resultDiv.className = 'error';
-        resultDiv.style.display = 'block';
-        resultDiv.innerHTML = 'Please enter 10 digit mobile number';
-        return;
-      }
-      
-      btn.disabled = true;
-      resultDiv.style.display = 'block';
-      resultDiv.className = '';
-      resultDiv.innerHTML = 'Checking...';
-      
-      var script = document.createElement('script');
-      script.src = SCRIPT_URL + "?action=check&mobile=" + mobile + "&callback=handleResponse";
-      document.body.appendChild(script);
-    }
-    
-    function handleResponse(response) {
-      var resultDiv = document.getElementById('result');
-      var btn = document.getElementById('checkBtn');
-      btn.disabled = false;
-      
-      if(response.includes('Invalid') || response.includes('No booking') || response.includes('Error')) {
-        resultDiv.className = 'error';
-      } else {
-        resultDiv.className = 'success';
-      }
-      resultDiv.innerHTML = response.replace(/\|/g, '<br>');
-    }
-  </script>
+  <!-- Hospital Logo -->
+  <div class="logo">
+    <img src="hospital-logo.png" alt="Hospital Logo">
+  </div>
+
+  <!-- 23 Tareekh Wala Check Status Box -->
+  <div class="container">
+    <div class="iframe-box">
+      <iframe
+        src="https://script.google.com/macros/s/AKfycbxfSWpZuYuGZzjvB_7278hJBW_-4SVxP7n9cJqC6DS2u9qM4amgvFNkPQcg5U8336fN/exec"
+        width="100%"
+        height="500"
+        frameborder="0"
+        scrolling="no">
+      </iframe>
+    </div>
+  </div>
+
 </body>
 </html>
