@@ -1,12 +1,20 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Check Appointment Status</title>
+  <title>Dashboard - SRS Hospital</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body { margin:0; padding:0; background:#f0f0f0; font-family:Arial; }
-    .topbar { background:#00a651; padding:12px; text-align:center; color:white; }
-    .topbar a { color:white; margin:0 12px; text-decoration:none; font-weight:bold; cursor:pointer; }
+    .topbar { 
+      background:#00a651; padding:12px; text-align:center; color:white; 
+      display:flex; justify-content:center; align-items:center; flex-wrap:wrap;
+    }
+    .topbar span { margin-right:15px; }
+    .topbar a { 
+      color:white; margin:0 12px; text-decoration:none; font-weight:bold; cursor:pointer; 
+      padding:5px 10px; border-radius:4px;
+    }
+    .topbar a:hover { background:#008543; }
   </style>
 </head>
 <body>
@@ -40,7 +48,7 @@
     
     function logout() {
       localStorage.removeItem('loggedInUser');
-      window.location.href = 'index.html';
+      window.location.href = 'index.html'; // Login page pe bhej dega
     }
   </script>
 </body>
