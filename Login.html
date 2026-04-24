@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Patient Login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body { font-family:Arial; background:#00a651; padding:20px; margin:0; }
+    .box { max-width:400px; margin:60px auto; background:white; padding:30px; border-radius:10px; box-shadow:0 4px 12px rgba(0,0,0,0.2); }
+    h2 { text-align:center; color:#00a651; margin-bottom:25px; }
+    input { width:100%; padding:12px; margin:10px 0; border:2px solid #ddd; border-radius:6px; box-sizing:border-box; font-size:16px; }
+    button { width:100%; padding:14px; background:#00a651; color:white; border:none; border-radius:6px; font-size:18px; font-weight:bold; cursor:pointer; margin-top:10px; }
+    button:hover { background:#008543; }
+    .bottom-link { text-align:right; margin-top:15px; font-size:14px; }
+    .bottom-link a { color:#0066cc; text-decoration:none; font-weight:bold; }
+    #msg { text-align:center; color:red; margin-top:10px; display:none; }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h2>SHRI RAM SANEHI HOSPITAL</h2>
+    <h3 style="text-align:center; color:#333;">Patient Login</h3>
+    <input type="text" id="mobile" placeholder="Mobile Number" maxlength="10">
+    <input type="password" id="pass" placeholder="Password">
+    <button onclick="login()">Login</button>
+    <div id="msg"></div>
+    <div class="bottom-link">
+      New User? <a href="signup.html">Sign Up</a>
+    </div>
+  </div>
+
+  <script>
+    // Agar pehle se login hai to sidha index pe bhej do
+    if(localStorage.getItem('loggedInUser')) {
+      window.location.href = 'index.html';
+    }
+
+    function login() {
+      var mobile = document.getElementById('mobile').value;
+      var pass = document.getElementById('pass').value;
+      var msg = document.getElementById('msg');
+      
+      // Signup wala data check karo
+      var users = JSON.parse(localStorage.getItem('users') || '[]');
+      var found = users.find(u => u.mobile === mobile && u.pass === pass);
+      
+      if(mobile.length !== 10) {
+        msg.style.display = 'block';
+        msg.innerText = '10 digit mobile daalo';
+        return;
+      }
+      
+      if(found) {
+        localStorage.setItem('loggedInUser', mobile);
+        window.location.href = 'index.html';
+      } else {
+        msg.style.display = 'block';
+        msg.innerText = 'Galat Mobile ya Password';
+      }
+    }
+  </script>
+</body>
+</html>
