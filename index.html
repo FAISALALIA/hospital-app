@@ -1,74 +1,72 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title>Login - SHRI RAM SANEHI MEMORIAL HOSPITAL</title>
+  <base target="_top">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css">
+  <title>SHRI RAM SANEHI MEMORIAL HOSPITAL</title>
+  <style>
+    body { font-family: Arial; padding: 20px; background: #f5f5f5; }
+  .container { max-width: 500px; margin: 0 auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    h1 { color: #c41e3a; text-align: center; margin-bottom: 10px; font-size: 24px; }
+    h3 { text-align: center; color: #555; margin-bottom: 30px; }
+    input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; font-size: 16px; }
+    button { width: 100%; padding: 12px; background: #c41e3a; color: white; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; margin-top: 10px; }
+    button:hover { background: #a01830; }
+    button:disabled { background: #ccc; cursor: not-allowed; }
+    #result { margin-top: 20px; padding: 15px; border-radius: 5px; display: none; line-height: 1.6; }
+  .success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+  .error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+  </style>
 </head>
 <body>
-  <!-- Hospital Header -->
-  <div class="hospital-header">
-    <img src="https://cdn-icons-png.flaticon.com/512/4006/4006511.png" alt="Hospital Logo">
-    <div class="header-text">
-      <h1>SHRI RAM SANEHI MEMORIAL HOSPITAL</h1>
-      <p>Care With Compassion</p>
-    </div>
-  </div>
-
   <div class="container">
-    <h2>Login</h2>
+    <h1>SHRI RAM SANEHI MEMORIAL HOSPITAL</h1>
+    <h3>Check Booking Status</h3>
     
-    <!-- Form tag hata diya - yahi refresh karta hai -->
-    <div>
-      <input type="text" id="loginEmail" placeholder="Email or Phone" required>
-      <input type="password" id="loginPassword" placeholder="Password" required>
-      <div class="error" id="loginError"></div>
-      
-      <div class="forgot-link">
-        <a href="forgot-password.html">Forgot Password?</a>
-      </div>
-      
-      <!-- type="button" important hai -->
-      <button type="button" onclick="loginUser()">Login</button>
-      
-      <div class="link-text">
-        Don't have an account? <a href="signup.html">Sign Up</a>
-      </div>
-    </div>
+    <input type="tel" id="mobile" placeholder="Enter 10 digit mobile number" maxlength="10">
+    <button onclick="checkStatus()" id="checkBtn">Check Status</button>
+    
+    <div id="result"></div>
   </div>
 
   <script>
-    function loginUser() {
-      const emailOrPhone = document.getElementById('loginEmail').value.trim();
-      const password = document.getElementById('loginPassword').value;
-      const errorDiv = document.getElementById('loginError');
-      errorDiv.innerText = '';
-
-      if (!emailOrPhone || !password) {
-        errorDiv.innerText = 'Please fill all fields';
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxfSWpZuYuGZzjvB_7278hJBW_-4SVxP7n9cJqC6DS2u9qM4amgvFNkPQcg5U8336fN/exec";
+    
+    function checkStatus() {
+      var mobile = document.getElementById('mobile').value;
+      var resultDiv = document.getElementById('result');
+      var btn = document.getElementById('checkBtn');
+      
+      if(mobile.length!== 10) {
+        resultDiv.className = 'error';
+        resultDiv.style.display = 'block';
+        resultDiv.innerHTML = 'Please enter 10 digit mobile number';
         return;
       }
-
-      const users = JSON.parse(localStorage.getItem('users')) || [];
-      const user = users.find(u => 
-        (u.email === emailOrPhone || u.phone === emailOrPhone) && u.password === password
-      );
-
-      if (user) {
-        localStorage.setItem('currentUser', JSON.stringify(user));
-        window.location.href = 'home.HTML'; // Direct redirect, no refresh
-      } else {
-        errorDiv.innerText = 'Invalid credentials';
-      }
+      
+      btn.disabled = true;
+      resultDiv.style.display = 'block';
+      resultDiv.className = '';
+      resultDiv.innerHTML = 'Checking...';
+      
+      // JSONP call for github.io
+      var script = document.createElement('script');
+      script.src = SCRIPT_URL + "?action=check&mobile=" + mobile + "&callback=handleResponse";
+      document.body.appendChild(script);
     }
-
-    // Enter key pe bhi login ho jaye
-    document.addEventListener('keypress', function(e) {
-      if (e.key === 'Enter') {
-        loginUser();
+    
+    function handleResponse(response) {
+      var resultDiv = document.getElementById('result');
+      var btn = document.getElementById('checkBtn');
+      btn.disabled = false;
+      
+      if(response.includes('Invalid') || response.includes('No booking') || response.includes('Error')) {
+        resultDiv.className = 'error';
+      } else {
+        resultDiv.className = 'success';
       }
-    });
+      resultDiv.innerHTML = response.replace(/\|/g, '<br>');
+    }
   </script>
 </body>
 </html>
